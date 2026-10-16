@@ -2,7 +2,7 @@
 """Static site builder for the MDJ Mortgages site.
 
 Assembles src/pages/*.html with the shared head/header/footer partials and
-writes finished pages to site/. No dependencies beyond the standard library.
+writes finished pages to the repo root. No dependencies beyond the standard library.
 
 Tokens available inside pages and partials:
   {{include:name}} contents of src/partials/name.html
@@ -12,13 +12,12 @@ Tokens available inside pages and partials:
 """
 import json
 import re
-import shutil
 from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).parent
 SRC = ROOT / "src"
-OUT = ROOT / "site"
+OUT = ROOT  # built pages sit at the repo root so any static host serves them directly
 SITE_URL = "https://www.mdjmortgages.com"
 
 _S = 'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'
@@ -107,10 +106,6 @@ def build():
     header = (SRC / "partials" / "header.html").read_text(encoding="utf-8")
     footer = (SRC / "partials" / "footer.html").read_text(encoding="utf-8")
 
-    if OUT.exists():
-        shutil.rmtree(OUT)
-    OUT.mkdir()
-    shutil.copytree(ROOT / "assets", OUT / "assets")
 
     pages = sorted((SRC / "pages").glob("*.html"))
     sitemap = []
@@ -144,7 +139,7 @@ def build():
         encoding="utf-8",
     )
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
-    print(f"Built {len(pages)} pages into {OUT.relative_to(ROOT)}/")
+    print(f"Built {len(pages)} pages into the repo root")
 
 
 if __name__ == "__main__":

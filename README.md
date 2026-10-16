@@ -27,9 +27,9 @@ A premium, 15-page static website for **MDJ Mortgages Ltd**, the award-winning m
 ```
 src/partials/   head, header, footer, shared CTA and review blocks
 src/pages/      one file per page (meta block + page body)
-assets/         CSS, JS, images (copied into site/ on build)
+assets/         CSS, JS, images
 build.py        zero-dependency builder (Python 3.8+)
-site/           built output, ready to deploy
+*.html          built pages at the repo root, ready to deploy
 ```
 
 ## Build
@@ -38,7 +38,7 @@ site/           built output, ready to deploy
 python3 build.py
 ```
 
-This writes finished HTML plus `sitemap.xml` and `robots.txt` to `site/`. Deploy the `site/` folder to any static host (Netlify, Vercel, Cloudflare Pages, or the existing hosting).
+This writes the finished HTML, `sitemap.xml` and `robots.txt` to the repo root, so the repo deploys as-is to GitHub Pages, Vercel, Netlify or Cloudflare Pages with no build settings. Edit files in `src/`, never the built `.html` files at the root, then rebuild.
 
 ## Before going live
 
